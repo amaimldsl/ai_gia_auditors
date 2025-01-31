@@ -1,0 +1,66 @@
+tasks:
+  - name: review_logical_access
+    description: Compare system access levels against authorized access matrix
+    agent: logical_access_reviewer
+    dependencies: []
+    priority: 1
+    inputs:
+      - access_report.csv
+      - access_matrix.csv
+    outputs:
+      - access_findings.md
+    expected_output: A markdown file containing access-related findings with title, background, discrepancies, and user feedback section
+
+  - name: review_transaction_limits
+    description: Analyze transaction approvals against authorized limits
+    agent: limit_reviewer
+    dependencies: []
+    priority: 1
+    inputs:
+      - limit_authorization.pdf
+      - transaction_logs.csv
+    outputs:
+      - limit_findings.md
+    expected_output: A markdown file containing limit-related findings with title, background, discrepancies, and user feedback section
+
+  - name: review_transactions
+    description: Analyze transactions for policy violations
+    agent: transaction_reviewer
+    dependencies: []
+    priority: 1
+    inputs:
+      - transaction_policy.pdf
+      - transaction_records.csv
+    outputs:
+      - transaction_findings.md
+    expected_output: A markdown file containing transaction-related findings with title, background, discrepancies, and user feedback section
+
+  - name: review_audit_trail
+    description: Compare system changes against change tickets
+    agent: audit_trail_reviewer
+    dependencies: []
+    priority: 1
+    inputs:
+      - audit_trail.csv
+      - change_tickets.csv
+    outputs:
+      - audit_trail_findings.md
+    expected_output: A markdown file containing audit trail-related findings with title, background, discrepancies, and user feedback section
+
+  - name: compile_audit_report
+    description: Compile all findings into comprehensive audit report
+    agent: audit_report_writer
+    dependencies: 
+      - review_logical_access
+      - review_transaction_limits
+      - review_transactions
+      - review_audit_trail
+    priority: 2
+    inputs:
+      - access_findings.md
+      - limit_findings.md
+      - transaction_findings.md
+      - audit_trail_findings.md
+    outputs:
+      - final_audit_report.md
+    expected_output: A comprehensive audit report with executive summaries, detailed findings, risk ratings, and management actions
