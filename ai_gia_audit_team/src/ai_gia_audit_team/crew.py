@@ -9,14 +9,17 @@ class AuditCrew:
     agents_config = 'config/agents.yaml'
     tasks_config = 'config/tasks.yaml'
 
-    agent_llm = LLM(model="ollama/mistral")
+    LLM_LLAMA31 = LLM(model="ollama/llama3.1")
+    LLM_MISTRAL = LLM(model="ollama/mistral")
+    LLM_PHI4=LLM(model="ollama/phi4")
+
 
     @agent
     def logical_access_reviewer(self) -> Agent:
         return Agent(
             config=self.agents_config['logical_access_reviewer'],
             tools=[CSVSearchTool(), FileWriterTool()],  # Instantiate tools here
-            llm=self.agent_llm,  # Corrected reference to agent_llm
+            llm=self.LLM_LLAMA31,  # Corrected reference to agent_llm
         )
 
     @agent
@@ -24,7 +27,7 @@ class AuditCrew:
         return Agent(
             config=self.agents_config['limit_reviewer'],
             tools=[CSVSearchTool(), PDFSearchTool(), FileWriterTool()],  # Instantiate tools here
-            llm=self.agent_llm,  # Corrected reference to agent_llm
+            llm=self.LLM_MISTRAL,  # Corrected reference to agent_llm
         )
 
     @agent
@@ -32,7 +35,7 @@ class AuditCrew:
         return Agent(
             config=self.agents_config['transaction_reviewer'],
             tools=[CSVSearchTool(), PDFSearchTool(), FileWriterTool()],  # Instantiate tools here
-            llm=self.agent_llm,  # Corrected reference to agent_llm
+            llm=self.LLM_PHI4,  # Corrected reference to agent_llm
         )
 
     @agent
@@ -40,7 +43,7 @@ class AuditCrew:
         return Agent(
             config=self.agents_config['audit_trail_reviewer'],
             tools=[CSVSearchTool(), FileWriterTool()],  # Instantiate tools here
-            llm=self.agent_llm,  # Corrected reference to agent_llm
+            llm=self.LLM_LLAMA31,  # Corrected reference to agent_llm
         )
 
     @agent
@@ -48,7 +51,7 @@ class AuditCrew:
         return Agent(
             config=self.agents_config['audit_report_writer'],
             tools=[FileWriterTool()],  # Instantiate tools here
-            llm=self.agent_llm,  # Corrected reference to agent_llm
+            llm=self.LLM_MISTRAL,  # Corrected reference to agent_llm
         )
 
     @task
@@ -92,5 +95,6 @@ class AuditCrew:
             agents=self.agents,
             tasks=self.tasks,
             process=Process.sequential,
-            verbose=True
+            verbose=True,
+            manager_llm=self.LLM_LLAMA31
         )

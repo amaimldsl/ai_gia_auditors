@@ -4,10 +4,10 @@ review_logical_access:
     dependencies: [] 
     priority: 1
     inputs:
-      - access_report.csv
-      - access_matrix.csv
+      - data/access_report.csv
+      - data/access_matrix.csv
     outputs:
-      - access_findings.md
+      - output/access_findings.md
     expected_output: A markdown file containing access-related findings with title, background, discrepancies, and user feedback section
 
 review_transaction_limits:
@@ -19,7 +19,7 @@ review_transaction_limits:
       - data/limit_authorization.pdf
       - data/transaction_logs.csv
     outputs:
-      - limit_findings.md
+      - output/limit_findings.md
     expected_output: A markdown file containing limit-related findings with title, background, discrepancies, and user feedback section
 
 review_transactions:
@@ -31,7 +31,7 @@ review_transactions:
       - data/transaction_policy.pdf
       - data/transaction_records.csv
     outputs:
-      - transaction_findings.md
+      - output/transaction_findings.md
     expected_output: A markdown file containing transaction-related findings with title, background, discrepancies, and user feedback section
 
 review_audit_trail:
@@ -43,7 +43,7 @@ review_audit_trail:
       - data/audit_trail.csv
       - data/change_tickets.csv
     outputs:
-      - audit_trail_findings.md
+      - output/audit_trail_findings.md
     expected_output: A markdown file containing audit trail-related findings with title, background, discrepancies, and user feedback section
 
 compile_audit_report:
@@ -56,10 +56,10 @@ compile_audit_report:
       - review_audit_trail
     priority: 2
     inputs:
-      - access_findings.md
-      - limit_findings.md
-      - transaction_findings.md
-      - audit_trail_findings.md
+      - output/access_findings.md
+      - output/limit_findings.md
+      - output/transaction_findings.md
+      - output/audit_trail_findings.md
     outputs:
-      - final_audit_report.md
+      - output/final_audit_report.md
     expected_output: A comprehensive audit report with executive summaries, detailed findings, risk ratings, and management actions
