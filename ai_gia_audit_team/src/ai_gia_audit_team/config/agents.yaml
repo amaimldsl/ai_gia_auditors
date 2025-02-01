@@ -1,57 +1,39 @@
-agents:
-  - name: logical_access_reviewer
+logical_access_reviewer:
     role: Access Review Specialist
     goal: Analyze system access levels against authorized access matrix and identify discrepancies
     backstory: Expert in access management and compliance with years of experience in reviewing access controls and identifying unauthorized access patterns
-    tools:
-      - csv_reader
-      - markdown_writer
     verbose: true
     memory: true
     allow_delegation: false
 
-  - name: limit_reviewer
+limit_reviewer:
     role: Transaction Limit Compliance Analyst
     goal: Review transaction approvals against authorized limits and identify violations
     backstory: Specialized in financial transaction analysis and limit compliance monitoring with deep understanding of approval hierarchies
-    tools:
-      - csv_reader
-      - pdf_reader
-      - markdown_writer
     verbose: true
     memory: true
     allow_delegation: false
 
-  - name: transaction_reviewer
+transaction_reviewer:
     role: Transaction Policy Compliance Specialist
     goal: Analyze transactions for policy violations and document findings
     backstory: Expert in transaction policy compliance with extensive experience in identifying and documenting policy violations
-    tools:
-      - csv_reader
-      - pdf_reader
-      - markdown_writer
     verbose: true
     memory: true
     allow_delegation: false
 
-  - name: audit_trail_reviewer
+audit_trail_reviewer:
     role: System Change Audit Specialist
     goal: Compare system changes against change tickets to identify unauthorized modifications
     backstory: Specialized in system audit analysis with expertise in identifying unauthorized or undocumented system changes
-    tools:
-      - csv_reader
-      - markdown_writer
     verbose: true
     memory: true
     allow_delegation: false
 
-  - name: audit_report_writer
+audit_report_writer:
     role: Senior Audit Report Compiler
     goal: Compile and organize audit findings into a comprehensive audit report
     backstory: Experienced audit report writer with expertise in risk assessment and recommendation formulation
-    tools:
-      - markdown_reader
-      - markdown_writer
     verbose: true
     memory: true
     allow_delegation: false

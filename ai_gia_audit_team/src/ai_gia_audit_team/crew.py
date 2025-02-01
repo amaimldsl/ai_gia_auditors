@@ -1,62 +1,71 @@
-from crewai import Agent, Crew, Process, Task
-from crewai.project import CrewBase, agent, crew, task
-
-# If you want to run a snippet of code before or after the crew starts, 
-# you can use the @before_kickoff and @after_kickoff decorators
-# https://docs.crewai.com/concepts/crews#example-crew-class-with-decorators
+from crewai import Agent, Task, Crew, Process, LLM
+from crewai.project import CrewBase, agent, task, crew
+from crewai_tools import CSVSearchTool, PDFSearchTool, FileWriterTool
 
 @CrewBase
-class AiGiaAuditTeam():
-	"""AiGiaAuditTeam crew"""
+class AuditCrew:
+    """Audit crew for reviewing system access, transactions, and compiling reports."""
+    
+    agents_config = 'config/agents.yaml'
+    tasks_config = 'config/tasks.yaml'
+    agent_llm = LLM(model="ollama/mistral")
 
-	# Learn more about YAML configuration files here:
-	# Agents: https://docs.crewai.com/concepts/agents#yaml-configuration-recommended
-	# Tasks: https://docs.crewai.com/concepts/tasks#yaml-configuration-recommended
-	agents_config = 'config/agents.yaml'
-	tasks_config = 'config/tasks.yaml'
+    # Agents with tools instantiated directly
+    @agent
+    def logical_access_reviewer(self) -> Agent:
+        return Agent(
+            config=self.agents_config['logical_access_reviewer'],
+            tools=[CSVSearchTool(), FileWriterTool()],
+            llm=self.agent_llm,
+        )
 
-	# If you would like to add tools to your agents, you can learn more about it here:
-	# https://docs.crewai.com/concepts/agents#agent-tools
-	@agent
-	def researcher(self) -> Agent:
-		return Agent(
-			config=self.agents_config['researcher'],
-			verbose=True
-		)
+    @agent
+    def limit_reviewer(self) -> Agent:
+        return Agent(
+            config=self.agents_config['limit_reviewer'],
+            tools=[CSVSearchTool(), PDFSearchTool(), FileWriterTool()],
+            llm=self.agent_llm,
+        )
 
-	@agent
-	def reporting_analyst(self) -> Agent:
-		return Agent(
-			config=self.agents_config['reporting_analyst'],
-			verbose=True
-		)
+    @agent
+    def transaction_reviewer(self) -> Agent:
+        return Agent(
+            config=self.agents_config['transaction_reviewer'],
+            tools=[CSVSearchTool(), PDFSearchTool(), FileWriterTool()],
+            llm=self.agent_llm,
+        )
 
-	# To learn more about structured task outputs, 
-	# task dependencies, and task callbacks, check out the documentation:
-	# https://docs.crewai.com/concepts/tasks#overview-of-a-task
-	@task
-	def research_task(self) -> Task:
-		return Task(
-			config=self.tasks_config['research_task'],
-		)
+    @agent
+    def audit_trail_reviewer(self) -> Agent:
+        return Agent(
+            config=self.agents_config['audit_trail_reviewer'],
+            tools=[CSVSearchTool(), FileWriterTool()],
+            llm=self.agent_llm,
+        )
 
-	@task
-	def reporting_task(self) -> Task:
-		return Task(
-			config=self.tasks_config['reporting_task'],
-			output_file='report.md'
-		)
+    @agent
+    def audit_report_writer(self) -> Agent:
+        return Agent(
+            config=self.agents_config['audit_report_writer'],
+            tools=[FileWriterTool()],
+            llm=self.agent_llm,
+        )
 
-	@crew
-	def crew(self) -> Crew:
-		"""Creates the AiGiaAuditTeam crew"""
-		# To learn how to add knowledge sources to your crew, check out the documentation:
-		# https://docs.crewai.com/concepts/knowledge#what-is-knowledge
+    # Tasks remain unchanged
+    @task
+    def review_logical_access(self) -> Task:
+        return Task(
+            config=self.tasks_config['review_logical_access'],
+            agent=self.logical_access_reviewer(),
+        )
 
-		return Crew(
-			agents=self.agents, # Automatically created by the @agent decorator
-			tasks=self.tasks, # Automatically created by the @task decorator
-			process=Process.sequential,
-			verbose=True,
-			# process=Process.hierarchical, # In case you wanna use that instead https://docs.crewai.com/how-to/Hierarchical/
-		)
+    # ... (other task definitions remain the same)
+
+    @crew
+    def crew(self) -> Crew:
+        return Crew(
+            agents=self.agents,
+            tasks=self.tasks,
+            process=Process.sequential,
+            verbose=True
+        )

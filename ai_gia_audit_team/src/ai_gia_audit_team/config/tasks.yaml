@@ -1,8 +1,7 @@
-tasks:
-  - name: review_logical_access
+review_logical_access:
     description: Compare system access levels against authorized access matrix
     agent: logical_access_reviewer
-    dependencies: []
+    dependencies: [] 
     priority: 1
     inputs:
       - access_report.csv
@@ -11,7 +10,7 @@ tasks:
       - access_findings.md
     expected_output: A markdown file containing access-related findings with title, background, discrepancies, and user feedback section
 
-  - name: review_transaction_limits
+review_transaction_limits:
     description: Analyze transaction approvals against authorized limits
     agent: limit_reviewer
     dependencies: []
@@ -23,7 +22,7 @@ tasks:
       - limit_findings.md
     expected_output: A markdown file containing limit-related findings with title, background, discrepancies, and user feedback section
 
-  - name: review_transactions
+review_transactions:
     description: Analyze transactions for policy violations
     agent: transaction_reviewer
     dependencies: []
@@ -35,7 +34,7 @@ tasks:
       - transaction_findings.md
     expected_output: A markdown file containing transaction-related findings with title, background, discrepancies, and user feedback section
 
-  - name: review_audit_trail
+review_audit_trail:
     description: Compare system changes against change tickets
     agent: audit_trail_reviewer
     dependencies: []
@@ -47,7 +46,7 @@ tasks:
       - audit_trail_findings.md
     expected_output: A markdown file containing audit trail-related findings with title, background, discrepancies, and user feedback section
 
-  - name: compile_audit_report
+compile_audit_report:
     description: Compile all findings into comprehensive audit report
     agent: audit_report_writer
     dependencies: 

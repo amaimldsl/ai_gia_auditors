@@ -1,30 +1,14 @@
-#!/usr/bin/env python
-import sys
-import warnings
+import os
+from crew import AuditCrew
 
-from datetime import datetime
+# Set up environment variables for API keys if needed
+os.environ["OPENAI_API_KEY"] = "your-openai-api-key"
 
-from crew import AiGiaAuditTeam
+# Instantiate the crew
+audit_crew = AuditCrew()
 
-warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
+# Kickoff the crew's work
+result = audit_crew.crew().kickoff()
 
-# This main file is intended to be a way for you to run your
-# crew locally, so refrain from adding unnecessary logic into this file.
-# Replace with inputs you want to test with, it will automatically
-# interpolate any tasks and agents information
-
-def run():
-    """
-    Run the crew.
-    """
-    inputs = {
-        'topic': 'AI LLMs',
-        'current_year': str(datetime.now().year)
-    }
-    
-    try:
-        AiGiaAuditTeam().crew().kickoff(inputs=inputs)
-    except Exception as e:
-        raise Exception(f"An error occurred while running the crew: {e}")
-
-run()
+print("Audit Report:")
+print(result)
