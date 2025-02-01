@@ -16,8 +16,8 @@ review_transaction_limits:
     dependencies: []
     priority: 1
     inputs:
-      - limit_authorization.pdf
-      - transaction_logs.csv
+      - data/limit_authorization.pdf
+      - data/transaction_logs.csv
     outputs:
       - limit_findings.md
     expected_output: A markdown file containing limit-related findings with title, background, discrepancies, and user feedback section
@@ -28,8 +28,8 @@ review_transactions:
     dependencies: []
     priority: 1
     inputs:
-      - transaction_policy.pdf
-      - transaction_records.csv
+      - data/transaction_policy.pdf
+      - data/transaction_records.csv
     outputs:
       - transaction_findings.md
     expected_output: A markdown file containing transaction-related findings with title, background, discrepancies, and user feedback section
@@ -40,8 +40,8 @@ review_audit_trail:
     dependencies: []
     priority: 1
     inputs:
-      - audit_trail.csv
-      - change_tickets.csv
+      - data/audit_trail.csv
+      - data/change_tickets.csv
     outputs:
       - audit_trail_findings.md
     expected_output: A markdown file containing audit trail-related findings with title, background, discrepancies, and user feedback section

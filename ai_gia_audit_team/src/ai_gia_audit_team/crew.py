@@ -57,6 +57,7 @@ class AuditCrew:
         return Task(
             config=self.tasks_config['review_logical_access'],
             agent=self.logical_access_reviewer(),
+            callback=lambda output: print(f"Task output: {output}"),
         )
 
     # ... (other task definitions remain the same)
