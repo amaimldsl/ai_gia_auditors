@@ -1,0 +1,8 @@
+review_logical_access:
+  description: Compare system access levels against authorized access matrix
+  inputs:
+  - access_report.csv
+  - access_matrix.csv
+  outputs:
+  - access_findings.md
+  priority: 1

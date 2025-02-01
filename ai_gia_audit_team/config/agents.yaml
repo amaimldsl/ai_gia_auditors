@@ -1,0 +1,7 @@
+logical_access_reviewer:
+  allow_delegation: false
+  backstory: Expert in access management and compliance
+  goal: Analyze system access levels against authorized access matrix
+  memory: true
+  role: Access Review Specialist
+  verbose: true
